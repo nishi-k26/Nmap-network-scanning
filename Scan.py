@@ -1,7 +1,33 @@
 #!/usr/bin/python3
 
 import nmap
-from vulnerability_scans import perform_ftp_scans, perform_ssh_scans  # Import the scanning functions
+from vulnerability_scans import (
+    perform_ftp_scans,
+    perform_ssh_scans,
+    perform_telnet_scans,
+    perform_smtp_scans,
+    perform_dns_scans,
+    perform_http_scans,
+    perform_https_scans,
+    perform_pop3_scans,
+    perform_msrpc_scans,
+    perform_netbios_scans,
+    perform_imap_scans,
+    perform_mysql_scans,
+    perform_rdp_scans,
+    perform_ldap_scans,
+    perform_dhcp_scans,
+    perform_redis_scans,
+    perform_nfs_scans,
+    perform_ntp_scans,
+    perform_ident_scans,
+    perform_kerberos_scans,
+    perform_rlogin_scans,
+    perform_postgresql_scans,
+    perform_vnc_scans,
+    perform_http_proxy_scans
+)
+# Import the scanning functions
 
 def scan_target(target):
     """Perform a basic scan to resolve the target hostname to IP address if necessary."""
@@ -33,9 +59,75 @@ def main():
 
     if 21 in open_ports:
         perform_ftp_scans(target)
-
+    
     if 22 in open_ports:
         perform_ssh_scans(target)
+    
+    if 23 in open_ports:
+        perform_telnet_scans(target)
+    
+    if 25 in open_ports:
+        perform_smtp_scans(target)
+    
+    if 53 in open_ports:
+        perform_dns_scans(target)
+    
+    if 80 in open_ports:
+        perform_http_scans(target)
+    
+    if 110 in open_ports:
+        perform_pop3_scans(target)
+
+    if 443 in open_ports:
+        perform_https_scans(target)
+
+    if 135 in open_ports:
+        perform_msrpc_scans(target)
+    
+    if 137 in open_ports or 139 in open_ports or 445 in open_ports:
+        perform_netbios_scans(target)
+    
+    if 143 in open_ports or 993 in open_ports:
+        perform_imap_scans(target)
+    
+    if 3306 in open_ports:
+        perform_mysql_scans(target)
+    
+    if 3389 in open_ports:
+        perform_rdp_scans(target)
+    
+    if 389 in open_ports:
+        perform_ldap_scans(target)
+    
+    if 67 in open_ports or 68 in open_ports:
+        perform_dhcp_scans(target)
+    
+    if 6379 in open_ports:
+        perform_redis_scans(target)
+    
+    if 111 in open_ports:
+        perform_nfs_scans(target)
+    
+    if 123 in open_ports:
+        perform_ntp_scans(target)
+    
+    if 113 in open_ports:
+        perform_ident_scans(target)
+    
+    if 88 in open_ports:
+        perform_kerberos_scans(target)
+    
+    if 513 in open_ports:
+        perform_rlogin_scans(target)
+    
+    if 5432 in open_ports:
+        perform_postgresql_scans(target)
+    
+    if 5900 in open_ports:
+        perform_vnc_scans(target)
+    
+    if 8080 in open_ports:
+        perform_http_proxy_scans(target)
 
     print("--" * 45)
     print("Vulnerability scans completed.")
