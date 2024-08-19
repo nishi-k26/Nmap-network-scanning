@@ -4,101 +4,6 @@
 import nmap
 import subprocess
 
-def perform_ftp_scans(target):
-    # Perform FTP vulnerability scans if port 21 is open.
-    ftp_scans = {
-        "ftp_banner_grabbing": ["nmap", "-sV", "--script=banner", "-p", "21", target],
-        "ftp_anonymous_access": ["nmap", "-sV", "--script=ftp-anon", "-p", "21", target],
-        "ftp_bounce_scan": ["nmap", "-sV", "-sC", "-p", "21", target],
-        "ftp_brute_force": ["nmap", "--script=ftp-brute", "-p", "21", target],
-    }
-
-    print("Starting FTP vulnerability scans...")
-    for scan_name, scan_command in ftp_scans.items():
-        print(f"Running {scan_name}...")
-        subprocess.run(scan_command)
-    print("Completed FTP vulnerability scans.")
-
-def perform_ssh_scans(target):
-    # Perform SSH vulnerability scans if port 22 is open.
-    ssh_scans = {
-        "ssh_banner_grabbing": ["nmap", "-sV", "--script=banner", "-p", "22", target],
-        "ssh_weak_algos": ["nmap", "--script=ssh2-enum-algos", "-p", "22", target],
-        "ssh_weak_ciphers": ["nmap", "--script=ssh2-enum-algos", "-p", "22", target],
-        "ssh_weak_macs": ["nmap", "--script=ssh2-enum-algos", "-p", "22", target],
-        "ssh_v1_support": ["nmap", "--script=sshv1", "-p", "22", "-n", target]
-    }
-
-    print("Starting SSH vulnerability scans...")
-    for scan_name, scan_command in ssh_scans.items():
-        print(f"Running {scan_name}...")
-        subprocess.run(scan_command)
-    print("Completed SSH vulnerability scans.")
-
-def perform_telnet_scans(target):
-    # Perform Telnet vulnerability scans if port 23 is open.
-    telnet_scans = {
-        "telnet_version": ["nmap", "-sV", "--script=banner", "-p", "23", target],
-        "telnet_brute_force": ["nmap", "-p", "23", "--script", "telnet-brute", "--script-args", "userdb=myusers.lst,passdb=mypwds.lst,telnet-brute.timeout=8s", target],
-        "telnet_ntlm_info": ["nmap", "-p", "23", "--script=telnet-ntlm-info", target],
-        "telnet_encryption": ["nmap", "-p", "23", "--script=telnet-encryption", target]
-    }
-
-    print("Starting Telnet vulnerability scans...")
-    for scan_name, scan_command in telnet_scans.items():
-        print(f"Running {scan_name}...")
-        subprocess.run(scan_command)
-    print("Completed Telnet vulnerability scans.")
-
-def perform_smtp_scans(target):
-    # Perform SMTP vulnerability scans if port 25, 465, or 587 is open.
-    smtp_scans = {
-        "smtp_version": ["nmap", "-sV", "--script=banner", "-p", "25", target],
-        "smtp_open_relay": ["nmap", "--script=smtp-open-relay", "--script-args", "smtp-open-relay.domain=<domain>,smtp-open-relay.ip=<address>", "-p", "25,465,587", target],
-        "smtp_enum_users": ["nmap", "--script=smtp-enum-users", "--script-args", "smtp-enum-users.methods={EXPN,...}", "-p", "25,465,587", target],
-        "smtp_commands": ["nmap", "--script=smtp-commands", "--script-args", "smtp-commands.domain=<domain>", "-pT:25,465,587", target],
-        "smtp_brute_force": ["nmap", "-p", "25", "--script=smtp-brute", target]
-    }
-
-    print("Starting SMTP vulnerability scans...")
-    for scan_name, scan_command in smtp_scans.items():
-        print(f"Running {scan_name}...")
-        subprocess.run(scan_command)
-    print("Completed SMTP vulnerability scans.")
-
-def perform_dns_scans(target):
-    # Perform DNS vulnerability scans if port 53 is open.
-    dns_scans = {
-        "dns_bruteforce": ["nmap", "--script=dns-brute", "-p", "53", target],
-        "dns_basic_info": ["nmap", "-sV", "--script=dns-info", "-p", "53", target],
-        "dns_reverse_lookup": ["nmap", "-sV", "--script=dns-reverse-lookup", "-p", "53", target],
-        "dns_srv_enum": ["nmap", "-sV", "--script=dns-srv-enum", "-p", "53", target],
-        "dns_zone_transfer": ["nmap", "--script=dns-zone-transfer", "--script-args", "dns-zone-transfer.domain=example.com", "-p", "53", target],
-        "dns_cache_snoop": ["nmap", "-sU", "-p", "53", "--script=dns-cache-snoop", target],
-        "dns_check_zone": ["nmap", "-sn", "-Pn", "--script=dns-check-zone", "--script-args=dns-check-zone.domain=example.com", "-p", "53", target],
-        "dns_recursion": ["nmap", "-Pn", "-sU", "-p", "53", "--script=dns-recursion", target]
-    }
-
-    print("Starting DNS vulnerability scans...")
-    for scan_name, scan_command in dns_scans.items():
-        print(f"Running {scan_name}...")
-        subprocess.run(scan_command)
-    print("Completed DNS vulnerability scans.")
-
-def perform_http_scans(target):
-    # Perform HTTP vulnerability scans if port 80 is open.
-    http_scans = {
-        "http_trace_track": ["curl", "-v", "-X", "TRACE", f"{target}:80"],
-        "apache_etag_header": ["curl", "-v", "-X", "GET", f"{target}:80"],
-        "http_sys_rce": ["curl", "-v", f"{target}:80/", "-H", "Host: irrelevant", "-H", "Range: bytes=0-18446744073709551615"]
-    }
-
-    print("Starting HTTP vulnerability scans...")
-    for scan_name, scan_command in http_scans.items():
-        print(f"Running {scan_name}...")
-        subprocess.run(scan_command)
-    print("Completed HTTP vulnerability scans.")
-
 def perform_pop3_scans(target):
     # Perform POP3 vulnerability scans if port 110 is open.
     pop3_scans = {
@@ -170,31 +75,6 @@ def perform_imap_scans(target):
         print(f"Running {scan_name}...")
         subprocess.run(scan_command)
     print("Completed IMAP vulnerability scans.")
-
-
-def perform_https_scans(target):
-    # Perform HTTPS vulnerability scans if port 443 is open.
-    https_scans = {
-        "ssl_cert_check": ["nmap", "-sV", "-p", "443", "--script=ssl-cert", target],
-        "ssl_protocol_detection": ["nmap", "-sV", "--script=ssl-enum-ciphers", "-p", "443", target],
-        "ssl_poodle_vulnerability": ["nmap", "-sV", "--version-light", "--script=ssl-poodle", "-p", "443", target],
-        "ssl_heartbleed": ["nmap", "-p", "443", "--script=ssl-heartbleed", target],
-        "ssl_dh_params": ["nmap", "--script=ssl-dh-params", target],
-        "ssl_weak_rsa_keys": ["nmap", "-sV", "-p", "443", "--script=ssl-cert", target],
-        "ssl_weak_hash_algo": ["nmap", "-sV", "-p", "443", "--script=ssl-cert", target],
-        "ssl_cert_expiry": ["nmap", "-sV", "-p", "443", "--script=ssl-cert", target],
-        "ssl_wrong_hostname": ["nmap", "-sV", "-p", "443", "--script=ssl-cert", target],
-        "ssl_ccs_injection": ["nmap", "-p", "443", "--script=ssl-ccs-injection", target],
-        "ssl_sweet32": ["nmap", "-sV", "--script=ssl-enum-ciphers", "-p", "443", target],
-        "ssl_lucky13": ["nmap", "-sV", "--script=ssl-enum-ciphers", "-p", "443", target],
-        "ssl_rc4": ["nmap", "-sV", "--script=ssl-enum-ciphers", "-p", "443", target]
-    }
-
-    print("Starting HTTPS vulnerability scans...")
-    for scan_name, scan_command in https_scans.items():
-        print(f"Running {scan_name}...")
-        subprocess.run(scan_command)
-    print("Completed HTTPS vulnerability scans.")
 
 # def perform_smb_scans(target):
 #     # Perform SMB vulnerability scans if port 445 is open.
@@ -273,7 +153,8 @@ def perform_dhcp_scans(target):
         print(f"Running {scan_name}...")
         subprocess.run(scan_command)
     print("Completed DHCP vulnerability scans.")
-
+    
+"""
 def perform_mysql_scans(target):
     # Perform MySQL vulnerability scans if port 3306 is open.
     mysql_scans = {
@@ -288,6 +169,7 @@ def perform_mysql_scans(target):
         print(f"Running {scan_name}...")
         subprocess.run(scan_command)
     print("Completed MySQL vulnerability scans.")
+"""
 
 def perform_rdp_scans(target):
     # Perform RDP vulnerability scans if port 3389 is open.
@@ -308,6 +190,7 @@ def perform_rdp_scans(target):
         subprocess.run(scan_command)
     print("Completed RDP vulnerability scans.")
 
+"""
 def perform_vnc_scans(target):
     # Perform VNC vulnerability scans if port 5900 is open.
     vnc_scans = {
@@ -337,6 +220,7 @@ def perform_http_proxy_scans(target):
         print(f"Running {scan_name}...")
         subprocess.run(scan_command)
     print("Completed HTTP-PROXY vulnerability scans.")
+"""
 
 def perform_nfs_scans(target):
     # Perform NFS vulnerability scans if port 2049 is open.
@@ -384,9 +268,7 @@ def perform_ident_scans(target):
 
 def perform_kerberos_scans(target):
     # Perform Kerberos vulnerability scans if port 88 is open.
-    kerberos_scans = {
-        "krb5_users_enumeration": ["nmap", "-p", "88", "--script=krb5-enum-users", "--script-args=krb5-enum-users.realm='XX-XXXT'", target]
-    }
+    kerberos_scans = {"krb5_users_enumeration": ["nmap", "-p", "88", "--script=krb5-enum-users", "--script-args=krb5-enum-users.realm='XX-XXXT'", target]}
 
     print("Starting Kerberos vulnerability scans...")
     for scan_name, scan_command in kerberos_scans.items():
@@ -394,6 +276,7 @@ def perform_kerberos_scans(target):
         subprocess.run(scan_command)
     print("Completed Kerberos vulnerability scans.")
 
+"""
 def perform_rlogin_scans(target):
     # Perform Rlogin vulnerability scans if port 513 is open.
     rlogin_scans = {
@@ -434,3 +317,4 @@ def perform_redis_scans(target):
         print(f"Running {scan_name}...")
         subprocess.run(scan_command)
     print("Completed Redis vulnerability scans.")
+"""
