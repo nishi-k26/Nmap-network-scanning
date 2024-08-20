@@ -10,7 +10,6 @@ This is a Python-based network scanning tool designed to identify and assess pot
 
 ## Installation
 1. **Clone the Repository:**
-   '''bash
    git clone https://github.com/nishi-k26/network-scanning-tool.git
 2. **Install Dependencies:**
    pip install -r requirements.txt
