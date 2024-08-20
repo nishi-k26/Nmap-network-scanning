@@ -26,7 +26,7 @@ We welcome contributions! To get started:
 
 1. Fork the repository.
 2. Create a new branch for your feature or bugfix
-3. Submit a pull request with a detailed description of the cchanges.
+3. Submit a pull request with a detailed description of the changes.
 
 
 For any inquiries or support, feel free to open an issue or contact the repository owner directly.
