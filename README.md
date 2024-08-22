@@ -12,12 +12,13 @@ This is a Python-based network scanning tool designed to identify and assess pot
 1. **Clone the Repository:**
    git clone https://github.com/nishi-k26/network-scanning-tool.git
 2. **Install Dependencies:**
-   pip install -r requirements.txt
+   pip install python-nmap
 
 ## Usage
 To run the network scanning tool, execute the main script:
 **python Scan.py**
 
+Enter the IP Address or DNS name you want to scan at the prompt.
 You can customize the scanning options by modifying the configuration files or adding new modules.
 
 ## Contributing
