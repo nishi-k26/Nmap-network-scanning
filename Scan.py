@@ -8,13 +8,16 @@ from vulnerability_scans.telnet_scans import perform_telnet_scans
 from vulnerability_scans.smtp_scans import perform_smtp_scans
 from vulnerability_scans.dns_scans import perform_dns_scans
 from vulnerability_scans.https_scans import perform_https_scans
-from vulnerabilities import (
+from vulnerability_scans.smb_scans import perform_smb_scans
+from vulnerability_scans.vulnerabilities import (
+    perform_http_proxy_scans,
     perform_ident_scans,
+    perform_mysql_scans,
     perform_nfs_scans,
     perform_ntp_scans,
     perform_rdp_scans,
+    perform_redis_scans,
     perform_rpcbind_scans,
-    perform_smb_scans,
     perform_snmp_scans,
     perform_pop3_scans,
     perform_msrpc_scans,
@@ -25,10 +28,8 @@ from vulnerabilities import (
     perform_dhcp_scans
 )
 
-# Import the scanning functions
-
 def scan_target(target):
-    """Perform a basic scan to resolve the target hostname to IP address if necessary."""
+    # Perform a basic scan to resolve the target hostname to IP address if necessary.
     scanner = nmap.PortScanner()
     print(f"Scanning {target}...")
     scanner.scan(target)
@@ -103,8 +104,8 @@ def main():
     if 67 in open_ports or 68 in open_ports:
         perform_dhcp_scans(target)
 
-    # if 3306 in open_ports:
-    #     perform_mysql_scans(target)
+    if 3306 in open_ports:
+        perform_mysql_scans(target)
     
     if 3389 in open_ports:
         perform_rdp_scans(target)
@@ -112,8 +113,8 @@ def main():
     # if 5900 in open_ports:
     #     perform_vnc_scans(target)
 
-    # if 8080 in open_ports:
-    #     perform_http_proxy_scans(target)
+    if 8080 in open_ports:
+        perform_http_proxy_scans(target)
 
     if 2049 in open_ports:
         perform_nfs_scans(target)
@@ -133,8 +134,8 @@ def main():
     # if 5432 in open_ports:
     #     perform_postgresql_scans(target)
 
-    # if 6379 in open_ports:
-    #     perform_redis_scans(target)
+    if 6379 in open_ports:
+        perform_redis_scans(target)
     
     print("--" * 45)
     print("Vulnerability scans completed.")
