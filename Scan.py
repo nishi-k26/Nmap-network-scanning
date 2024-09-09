@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import nmap
+
 from vulnerability_scans.ftp_scans import perform_ftp_scans
 from vulnerability_scans.http_scans import perform_http_scans
 from vulnerability_scans.ssh_scans import perform_ssh_scans
