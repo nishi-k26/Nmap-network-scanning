@@ -1,6 +1,16 @@
 #!/usr/bin/python3
 
 import nmap
+import shodan
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from the .env file
+load_dotenv()
+
+# Access the Shodan API key from the environment variables
+SHODAN_API_KEY = os.getenv('SHODAN_API_KEY')
+api = shodan.Shodan(SHODAN_API_KEY)
 
 from vulnerability_scans.ftp_scans import perform_ftp_scans
 from vulnerability_scans.http_scans import perform_http_scans
@@ -29,6 +39,17 @@ from vulnerability_scans.vulnerabilities import (
     perform_dhcp_scans
 )
 
+def query_shodan(ip):
+    try:
+        print(f"Querying Shodan for IP: {ip}")
+        host_info = api.host(ip)
+        print(f"IP: {host_info['ip_str']}")
+        print(f"Open Ports: {host_info['ports']}")
+        print(f"Vulnerabilities: {host_info.get('vulns', 'None')}")
+    except shodan.APIError as e:
+        print(f"Error querying Shodan: {e}")
+
+
 def scan_target(target):
     # Perform a basic scan to resolve the target hostname to IP address if necessary.
     scanner = nmap.PortScanner()
@@ -39,13 +60,17 @@ def scan_target(target):
     for host in scanner.all_hosts():
         print(f'Host: {host} ({scanner[host].hostname()})')
         print(f'State: {scanner[host].state()}')
-        for proto in scanner[host].all_protocols():  # Iterate over each protocol
-            print(f'Protocol: {proto}')  # Print the protocol name
-            ports = list(scanner[host][proto].keys())  # Convert ports to a list
-            print(f'Open ports: {ports}')  # Print the list of ports
-            open_ports.extend(ports)  # Add ports to the open_ports list
-            for port in ports:  # Iterate over each port
-                print(f'Port: {port}\t State: {scanner[host][proto][port]["state"]}')  # Print port and its state
+
+        # Query Shodan for this host
+        query_shodan(host)
+
+        for proto in scanner[host].all_protocols():
+            print(f'Protocol: {proto}')
+            ports = list(scanner[host][proto].keys())
+            print(f'Open ports: {ports}')
+            open_ports.extend(ports)
+            for port in ports:
+                print(f'Port: {port}\t State: {scanner[host][proto][port]["state"]}')
     
     return open_ports
 
