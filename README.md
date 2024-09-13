@@ -13,6 +13,7 @@ This is a Python-based network scanning tool designed to identify and assess pot
    git clone https://github.com/nishi-k26/network-scanning-tool.git
 2. **Install Dependencies:**
    pip install python-nmap
+   pip install fpdf
 
 ## Usage
 To run the network scanning tool, execute the main script:
