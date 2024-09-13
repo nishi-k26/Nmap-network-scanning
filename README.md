@@ -22,6 +22,9 @@ To run the network scanning tool, execute the main script:
 Enter the IP Address or DNS name you want to scan at the prompt.
 You can customize the scanning options by modifying the configuration files or adding new modules.
 
+## Results
+![Screenshot of the Result](https://github.com/user-attachments/assets/c1722898-e4c1-4deb-b85a-914df1a50da6)
+
 ## Contributing
 We welcome contributions! To get started:
 
